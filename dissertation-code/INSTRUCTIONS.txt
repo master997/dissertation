@@ -1,0 +1,54 @@
+Requires Python 3.11. Verify with:
+  python --version
+
+This submission is deterministic from the bundled dataset file:
+  data/spy_raw.csv
+
+Do NOT re-download data if you are verifying the submitted run.
+
+Setup:
+  python -m venv .venv
+  source .venv/bin/activate          # Windows: .venv\Scripts\activate
+  pip install -r requirements.txt
+  pip install -e .
+
+Optional (only if you want to re-create the cache file yourself):
+  python scripts/cache_spy.py
+
+Quick examiner run (target < 5 minutes):
+  pytest tests/
+  python -m src.main --quick
+
+Expected outputs (quick run):
+  results/quick/
+    - dataset_fingerprint.json   (sha256 hash of the CSV used for this run)
+    - predictions.csv
+    - fold_results.csv
+    - metrics.csv
+    - metrics_aggregate.csv
+    - significance_tests.csv
+    - regime_assignments.csv
+    - metrics_by_regime.csv
+    - trading_metrics.csv
+  figures/quick/
+    - walkforward_schematic.png
+    - accuracy_per_fold.png
+    - metrics_table.png
+    - class_distribution.png
+    - confusion_matrices.png
+    - equity_curve.png
+    - equity_curve_cost_sensitivity.png
+    - drawdown_curve.png
+  models/quick/
+    - rf_fold_*.pkl
+    - xgb_fold_*.pkl (only if XGBoost is installed)
+
+Full pipeline run (2–4 hours on a typical laptop):
+  python -m src.main
+
+Full-run outputs (if you run it yourself) are written to:
+  results/    figures/    models/
+
+XGBoost note:
+  If the `xgboost` Python package cannot be imported, the pipeline will log a warning
+  and proceed without XGBoost. This is expected and still a valid run.

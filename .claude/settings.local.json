@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(pip3 install *)",
+      "Bash(.venv/bin/python -c \"import yfinance, pandas, sklearn, xgboost; print\\('all imports OK'\\)\")",
+      "Bash(.venv/bin/python *)",
+      "Skill(update-config)"
+    ]
+  }
+}

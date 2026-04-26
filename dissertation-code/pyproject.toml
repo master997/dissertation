@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dissertation-code"
+version = "0.1.0"
+description = "SPY directional forecasting — Synoptic Creative Piece"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "numpy>=1.26",
+  "pandas>=2.2",
+  "PyYAML>=6.0",
+  "scikit-learn>=1.5",
+  "scipy>=1.14",
+  "statsmodels>=0.14",
+  "ta>=0.11",
+  "matplotlib>=3.9",
+  "yfinance>=0.2.49",
+]
+
+[project.optional-dependencies]
+# Optional: may fail to install/import on some machines (OpenMP/toolchain).
+xgb = ["xgboost>=2.1"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

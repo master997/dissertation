@@ -1,0 +1,63 @@
+# Reproducibility
+seed: 42
+
+# Data
+ticker: SPY
+start_date: "2010-01-01"
+end_date: "2026-04-01"
+data_cache: data/spy_raw.csv
+
+# Features
+feature_cache: data/spy_features.csv
+longest_lookback_days: 200
+
+# Walk-forward validation
+train_years: 5
+test_months: 6
+purge_days: 200
+embargo_days: 10
+quick_fold_indices: [0, 2, 17]  # one fold per return regime: sideways, bull, bear
+
+# Inner CV
+inner_cv_splits: 3
+n_iter_hp_search: 20
+n_iter_hp_search_quick: 5
+
+# Training guard
+min_train_rows: 500
+
+# Regimes
+bull_threshold: 0.05
+bear_threshold: -0.05
+vol_tercile_method: "quantile"
+min_folds_per_regime: 3
+
+# Trading simulation
+transaction_costs_bps: [0, 5, 10, 20]
+risk_free_rate: 0.0
+trading_days_per_year: 252
+
+# Paths
+results_dir: results
+models_dir: models
+figures_dir: figures
+
+# Model grids (frozen — do not adjust after training begins)
+rf_grid:
+  n_estimators: [100, 200, 300, 500]
+  max_depth: [3, 5, 7, 10, null]
+  min_samples_split: [5, 10, 20]
+  min_samples_leaf: [2, 5, 10]
+  max_features: ["sqrt", "log2", 0.5]
+
+xgb_grid:
+  learning_rate: [0.01, 0.05, 0.1, 0.2]
+  max_depth: [2, 3, 4, 5]
+  n_estimators: [100, 200, 300, 500]
+  reg_alpha: [0, 0.01, 0.1, 1.0]
+  reg_lambda: [0.1, 1.0, 5.0, 10.0]
+  subsample: [0.7, 0.8, 0.9, 1.0]
+  colsample_bytree: [0.7, 0.8, 0.9, 1.0]
+
+logistic_grid:
+  C: [0.01, 0.1, 1.0, 10.0]
