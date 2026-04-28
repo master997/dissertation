@@ -20,6 +20,13 @@ Quick examiner verification path
 5. Run the quick pipeline:
    python -m src.main --quick
 
+Full dissertation reproduction path
+1. Use the same Python 3.13 environment setup above.
+2. Install research dependencies:
+   pip install -e ".[dev,research]"
+3. Run the strict dissertation path:
+   python -m src.main --require-research-deps
+
 Expected quick-run evidence
 - results/quick/dataset_fingerprint.json
 - results/quick/metrics_aggregate.csv
@@ -36,6 +43,7 @@ What the quick run is for
 Important notes
 - Normal verification should not need to re-download data.
 - If xgboost is unavailable, the quick path should still complete with baselines and Random Forest.
+- The strict dissertation path uses `--require-research-deps` and fails fast unless both `xgboost` and `shap` are installed.
 - If ffmpeg is unavailable, animation export falls back from MP4 to GIF automatically.
 - Pickled model files in models/ are included for reproducibility only and should not be treated as trusted external inputs.
 

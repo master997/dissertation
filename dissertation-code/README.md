@@ -13,11 +13,11 @@ pytest tests/
 python -m src.main --quick
 ```
 
-## Reproducibility & verification (what to check)
+## Reproducibility and verification
 
 This project is deterministic from the bundled dataset file `data/spy_raw.csv`.
 
-The official submission artefacts are the outputs from the final full experimental run stored in `results/`, `figures/`, and `models/`. The `quick/` subdirectories are optional examiner-facing reproducibility artefacts only.
+The official submission artefacts are the outputs from the final full experimental run stored in `results/`, `figures/`, and `models/`. The `quick/` subdirectories are optional reproducibility artefacts for a lighter verification run.
 
 After `python -m src.main --quick`, you should find:
 
@@ -44,6 +44,15 @@ The default examiner install, `pip install -e ".[dev]"`, does not require XGBoos
 - There may be no `models/*/xgb_fold_*.pkl` files
 
 For the full pinned research environment, use `pip install -r requirements.txt`. For optional extras without the pinned file, use `pip install -e ".[dev,research]"`.
+
+## Two supported run modes
+
+Use these as two distinct stories, not one muddled one:
+
+- **Examiner quick path:** `pip install -e ".[dev]"` then `python -m src.main --quick`
+- **Full dissertation reproduction path:** `pip install -e ".[dev,research]"` then `python -m src.main --require-research-deps`
+
+The quick path is designed to stay runnable even if `xgboost` or `shap` are unavailable. The full dissertation path is stricter and will fail fast unless both are installed.
 
 ## Data cache
 
@@ -81,14 +90,12 @@ This project is a local, offline-first research pipeline rather than a multi-use
 - **EDI / bias limits still matter in finance ML.** Although the dataset contains no protected-characteristic columns, bias can still arise through the target definition, the market period sampled, class imbalance, regime imbalance, and the choice of features and baselines.
 - **Claims should stay bounded.** The project forecasts next-day SPY direction under a leakage-safe protocol; it should not be framed as an objective or universally fair decision system.
 
-## Dissertation alignment (manual edits before submission)
+## Project notes
 
-- Update dissertation Table 3.2 to **26** features (not “approximately 30”).
-- Update dissertation §1.2.2 objectives **1 and 3** to refer to **XGBoost specifically** (see Creative Piece spec §2).
-- Describe the full run as the **final experimental run on the frozen dataset**, not as a rerun.
-- Report the headline finding honestly: the more complex ML models did not outperform the long-only / majority baseline overall, even though some regime-level pockets were more promising.
-- Add a short **security** subsection explaining why classic web/database attacks are not central here, but why dependency trust, external downloads, and pickle safety still matter.
-- Add a short **EDI / ethics** subsection explaining that financial-market data avoids direct personal data, but does not remove bias risk from target construction, data period choice, class imbalance, and model interpretation.
+- The feature set used in the submitted pipeline is **26** engineered features.
+- The full run should be described consistently as the **final experimental run on the frozen dataset**.
+- The headline result is that the more complex ML models did not outperform the long-only / majority baseline overall, even though some regime-level pockets were more promising.
+- Security, ethics, and EDI considerations are summarized in `SECURITY_AND_EDI.md`.
 
 ## Video demonstration
 
@@ -96,4 +103,4 @@ Kaltura link: *(not included in this repo snapshot)*
 
 ## Submission checklist
 
-Start with `INSTRUCTIONS.txt` for the fastest examiner run path, then see `SUBMISSION_CHECKLIST.md` before packaging. The checklist maps the Creative Piece ZIP contents, examiner run commands, and report/demo reminders to the 6Z0019 marking criteria.
+Start with `INSTRUCTIONS.txt` for the fastest run path, then see `SUBMISSION_CHECKLIST.md` for package contents, verification commands, and supporting materials.

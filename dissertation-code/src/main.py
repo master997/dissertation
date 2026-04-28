@@ -10,6 +10,7 @@ from dataclasses import replace
 from pathlib import Path
 from typing import Any
 import json
+import importlib.util
 
 import pandas as pd
 
@@ -35,6 +36,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="SPY directional forecasting pipeline")
     p.add_argument("--quick", action="store_true", help="Run subset folds and fewer HP iterations.")
     p.add_argument("--skip-train", action="store_true", help="Skip training; use cached results.")
+    p.add_argument(
+        "--require-research-deps",
+        action="store_true",
+        help="Fail fast unless xgboost and shap are installed. Use for full dissertation reproduction.",
+    )
     p.add_argument("--seed", type=int, default=None, help="Override config seed.")
     p.add_argument(
         "--config",
@@ -54,6 +60,11 @@ def _quick_subdir(path: str) -> str:
     """
     p = Path(path)
     return str(p / "quick")
+
+
+def _ensure_research_dependencies() -> tuple[bool, list[str]]:
+    missing = [name for name in ("xgboost", "shap") if importlib.util.find_spec(name) is None]
+    return (len(missing) == 0), missing
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -79,6 +90,15 @@ def main(argv: list[str] | None = None) -> int:
     setup_logging(config.results_dir)
     logger = logging.getLogger("main")
     logger.info("Starting pipeline (quick=%s, skip_train=%s)", args.quick, args.skip_train)
+
+    if args.require_research_deps:
+        ok, missing = _ensure_research_dependencies()
+        if not ok:
+            logger.error(
+                "Missing required research dependencies: %s. Install with `pip install -e \".[dev,research]\"`.",
+                ", ".join(sorted(missing)),
+            )
+            return 1
 
     df_raw = download_spy(config)
 

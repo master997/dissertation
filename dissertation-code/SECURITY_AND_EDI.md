@@ -37,8 +37,8 @@ How this project addresses that responsibly:
 - It reports limitations explicitly, including scarce bear-regime folds.
 - It avoids over-claiming that the system is universally reliable or suitable for high-stakes automated decision-making.
 
-## Suggested report language
+## Positioning
 
-Use a short section in the report stating:
+This Creative Piece does not process personal data or provide a public-facing web interface, so classic application-security issues such as SQL injection and XSS are not central risks. The more relevant concerns are reproducibility, dependency trust, and the unsafe nature of untrusted pickle artefacts.
 
-"This Creative Piece does not process personal data or provide a public-facing web interface, so classic application-security issues such as SQL injection and XSS are not central risks. The more relevant concerns are reproducibility, dependency trust, and the unsafe nature of untrusted pickle artefacts. From an EDI perspective, the dataset contains no protected-characteristic fields, but this does not eliminate bias risk entirely: modelling choices, class imbalance, and uneven market-regime coverage can still shape the conclusions. Accordingly, the project frames its findings as limited, methodological evidence rather than neutral or universally applicable truth."
+From an EDI perspective, the dataset contains no protected-characteristic fields, but this does not eliminate bias risk entirely: modelling choices, class imbalance, and uneven market-regime coverage can still shape the conclusions. The findings should therefore be read as limited methodological evidence rather than neutral or universally applicable truth.

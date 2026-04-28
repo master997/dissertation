@@ -178,3 +178,61 @@ def test_xgboost_optional_import_failure_still_trains_rf_and_baselines(tmp_path:
     preds = pd.read_csv(Path(cfg.results_dir) / "predictions.csv")
     assert set(preds["model"].unique().astype(str)) >= {"majority", "naive", "logistic", "rf"}
 
+
+def test_require_research_deps_fails_fast_when_missing(tmp_path: Path, monkeypatch) -> None:
+    cfg_path = tmp_path / "config.yaml"
+    cfg_path.write_text(
+        "\n".join(
+            [
+                "seed: 42",
+                "ticker: SPY",
+                'start_date: "2010-01-01"',
+                'end_date: "2026-04-01"',
+                f"data_cache: {tmp_path / 'spy_raw.csv'}",
+                f"feature_cache: {tmp_path / 'spy_features.csv'}",
+                "longest_lookback_days: 200",
+                "train_years: 5",
+                "test_months: 6",
+                "test_window_days: 126",
+                "purge_days: 200",
+                "embargo_days: 10",
+                "quick_fold_indices: [0, 2]",
+                "inner_cv_splits: 2",
+                "n_iter_hp_search: 2",
+                "n_iter_hp_search_quick: 1",
+                "min_train_rows: 200",
+                "bull_threshold: 0.05",
+                "bear_threshold: -0.05",
+                'vol_tercile_method: "quantile"',
+                "min_folds_per_regime: 3",
+                "transaction_costs_bps: [0]",
+                "risk_free_rate: 0.0",
+                "trading_days_per_year: 252",
+                f"results_dir: {tmp_path / 'results'}",
+                f"models_dir: {tmp_path / 'models'}",
+                f"figures_dir: {tmp_path / 'figures'}",
+                "rf_grid:",
+                "  n_estimators: [10]",
+                "  max_depth: [3]",
+                "  min_samples_split: [5]",
+                "  min_samples_leaf: [2]",
+                '  max_features: ["sqrt"]',
+                "xgb_grid: {}",
+                "logistic_grid:",
+                "  C: [0.1]",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    real_find_spec = __import__("importlib.util").util.find_spec
+
+    def _blocked_find_spec(name: str, *args, **kwargs):
+        if name in {"xgboost", "shap"}:
+            return None
+        return real_find_spec(name, *args, **kwargs)
+
+    monkeypatch.setattr("importlib.util.find_spec", _blocked_find_spec)
+    code = main(["--require-research-deps", "--config", str(cfg_path)])
+    assert code == 1

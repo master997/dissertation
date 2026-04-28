@@ -18,6 +18,13 @@ Quick examiner verification path
 5. Run the quick pipeline:
    python -m src.main --quick
 
+Full dissertation reproduction path
+1. Use the same Python 3.13 virtual environment steps above.
+2. Install research dependencies:
+   pip install -e ".[dev,research]"
+3. Run the strict full pipeline:
+   python -m src.main --require-research-deps
+
 Expected quick-run artefacts
 - results/quick/dataset_fingerprint.json
 - results/quick/metrics_aggregate.csv
@@ -39,5 +46,6 @@ Notes
   re-download data during normal verification.
 - If xgboost is unavailable on the examiner machine, the pipeline logs a warning
   and continues without XGBoost. Baselines and Random Forest still run.
+- For the full dissertation reproduction path, `--require-research-deps` fails fast unless both `xgboost` and `shap` are installed.
 - The project has been verified on a clean Python 3.13.9 environment.
 - README.md contains fuller background, repository layout, and submission notes.
