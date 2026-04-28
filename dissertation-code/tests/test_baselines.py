@@ -21,6 +21,7 @@ def cfg(tmp_path) -> Config:
         longest_lookback_days=200,
         train_years=5,
         test_months=6,
+        test_window_days=126,
         purge_days=200,
         embargo_days=10,
         quick_fold_indices=[0, 12],

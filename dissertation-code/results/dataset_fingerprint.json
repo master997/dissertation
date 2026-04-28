@@ -1,0 +1,10 @@
+{
+  "data_cache": "data/spy_raw.csv",
+  "date_max": "2026-03-30 00:00:00",
+  "date_min": "2010-01-05 00:00:00",
+  "end_date": "2026-04-01",
+  "rows": 4083,
+  "sha256": "b009100e20a72ecf3fb4165000fd5ffbc108040c0463ebf9b664a168d524aa1f",
+  "start_date": "2010-01-01",
+  "ticker": "SPY"
+}

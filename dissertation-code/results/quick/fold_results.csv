@@ -1,0 +1,13 @@
+fold_id,model,train_size,test_size,best_params
+0,majority,1058,126,{}
+0,naive,1058,126,{}
+0,logistic,1058,126,"{""clf__C"": 1.0}"
+0,rf,1058,126,"{""n_estimators"": 300, ""min_samples_split"": 10, ""min_samples_leaf"": 5, ""max_features"": ""log2"", ""max_depth"": 7}"
+2,majority,1059,126,{}
+2,naive,1059,126,{}
+2,logistic,1059,126,"{""clf__C"": 0.01}"
+2,rf,1059,126,"{""n_estimators"": 300, ""min_samples_split"": 10, ""min_samples_leaf"": 10, ""max_features"": 0.5, ""max_depth"": 3}"
+17,majority,1058,126,{}
+17,naive,1058,126,{}
+17,logistic,1058,126,"{""clf__C"": 10.0}"
+17,rf,1058,126,"{""n_estimators"": 300, ""min_samples_split"": 10, ""min_samples_leaf"": 10, ""max_features"": 0.5, ""max_depth"": 3}"

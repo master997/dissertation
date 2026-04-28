@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
+from joblib import parallel_backend
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
 
@@ -213,7 +214,8 @@ def train_all_models(
             n_jobs=n_jobs,
             refit=True,
         )
-        rf_search.fit(X_train, y_train)
+        with parallel_backend("threading"):
+            rf_search.fit(X_train, y_train)
         rf_pred = rf_search.predict(X_test)
         rf_pr = rf_search.predict_proba(X_test)[:, 1]
         with open(models_dir / f"rf_fold_{fold_id}.pkl", "wb") as fh:
@@ -263,7 +265,8 @@ def train_all_models(
             n_jobs=n_jobs,
             refit=True,
         )
-        xgb_search.fit(X_train, y_train)
+        with parallel_backend("threading"):
+            xgb_search.fit(X_train, y_train)
         xgb_pred = xgb_search.predict(X_test)
         xgb_pr = xgb_search.predict_proba(X_test)[:, 1]
         with open(models_dir / f"xgb_fold_{fold_id}.pkl", "wb") as fh:

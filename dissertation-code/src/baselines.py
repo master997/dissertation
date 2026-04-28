@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
+from joblib import parallel_backend
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
 from sklearn.pipeline import Pipeline
@@ -75,7 +76,9 @@ def logistic_baseline(
         n_jobs=-1,
         refit=True,
     )
-    search.fit(X_train, y_train)
+    # Use threads so CV remains portable on macOS environments where loky semaphores are restricted.
+    with parallel_backend("threading"):
+        search.fit(X_train, y_train)
     y_pred = search.predict(X_test)
     y_proba = search.predict_proba(X_test)[:, 1]
     return y_pred.astype(np.int64), y_proba.astype(float), dict(search.best_params_)

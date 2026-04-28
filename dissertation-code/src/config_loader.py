@@ -33,6 +33,7 @@ class Config:
     longest_lookback_days: int
     train_years: int
     test_months: int
+    test_window_days: int
     purge_days: int
     embargo_days: int
     quick_fold_indices: list[int]
@@ -73,6 +74,7 @@ def load_config(path: str | Path | None = None) -> Config:
         longest_lookback_days=int(raw["longest_lookback_days"]),
         train_years=int(raw["train_years"]),
         test_months=int(raw["test_months"]),
+        test_window_days=int(raw["test_window_days"]),
         purge_days=int(raw["purge_days"]),
         embargo_days=int(raw["embargo_days"]),
         quick_fold_indices=list(raw["quick_fold_indices"]),

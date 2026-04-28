@@ -22,6 +22,8 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+_WARMUP_TOLERANCE_ROWS = 5
+
 FEATURE_COLS = [
     # Momentum (6)
     "rsi_14",
@@ -120,7 +122,14 @@ def engineer_features(df: pd.DataFrame, config: Config) -> pd.DataFrame:
     missing = set(FEATURE_COLS) - set(out.columns)
     assert not missing, f"Missing features after engineering: {missing}"
 
+    rows_before_drop = len(out)
     out = out.dropna(subset=cols_needed)
+    rows_dropped = rows_before_drop - len(out)
+    warmup_msg = "Feature warm-up dropped %d rows (configured longest_lookback_days=%d)."
+    if rows_dropped > config.longest_lookback_days + _WARMUP_TOLERANCE_ROWS:
+        logger.warning(warmup_msg, rows_dropped, config.longest_lookback_days)
+    else:
+        logger.info(warmup_msg, rows_dropped, config.longest_lookback_days)
     # log_return kept for regimes/trading; models use FEATURE_COLS only.
     out = out[FEATURE_COLS + ["log_return", "target"]]
 

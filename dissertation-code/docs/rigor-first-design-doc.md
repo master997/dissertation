@@ -63,7 +63,7 @@ Implemented in `src/validation.py`, parameterized by `config.yaml`.
 Fold construction:
 
 - Train window: `train_years = 5` calendar years ending the day before the fold’s first test date.
-- Test window: 126 trading rows (≈ 6 months) starting at the first row with date ≥ test start.
+- Test window: `test_window_days = 126` trading rows (≈ 6 months) starting at the first row with date ≥ test start.
 - Purge: drop the last `purge_days = 200` trading rows from the raw train window (removes boundary contamination).
 - Embargo / advance rule: after each fold, the next fold’s test start cursor is advanced by:
   - `test_months = 6` calendar months

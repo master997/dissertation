@@ -1,0 +1,43 @@
+SPY Directional Forecasting - 6Z0019 Synoptic Project Creative Piece
+
+This archive contains the source code, data, configuration, and generated artefacts
+for the submitted project.
+
+Requirements
+- Python 3.13
+
+Quick examiner verification path
+1. Open a terminal in the dissertation-code folder.
+2. Create and activate a virtual environment:
+   python -m venv .venv
+   source .venv/bin/activate
+3. Install examiner dependencies:
+   pip install -e ".[dev]"
+4. Run the automated tests:
+   pytest tests/
+5. Run the quick pipeline:
+   python -m src.main --quick
+
+Expected quick-run artefacts
+- results/quick/dataset_fingerprint.json
+- results/quick/metrics_aggregate.csv
+- results/quick/significance_tests.csv
+- results/quick/trading_metrics.csv
+- figures/quick/walkforward_schematic.png
+- figures/quick/metrics_table.png
+
+Final submission artefacts
+- results/
+- figures/
+- models/
+
+These full-run directories contain the official outputs from the final experimental
+run on the frozen dataset data/spy_raw.csv.
+
+Notes
+- The project uses the bundled dataset data/spy_raw.csv and should not need to
+  re-download data during normal verification.
+- If xgboost is unavailable on the examiner machine, the pipeline logs a warning
+  and continues without XGBoost. Baselines and Random Forest still run.
+- The project has been verified on a clean Python 3.13.9 environment.
+- README.md contains fuller background, repository layout, and submission notes.

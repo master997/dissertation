@@ -3,10 +3,23 @@
 from __future__ import annotations
 
 import logging
+import os
 import pickle
+import tempfile
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+_CACHE_ROOT = Path(tempfile.gettempdir()) / "dissertation-code-cache"
+_MPL_CACHE = _CACHE_ROOT / "matplotlib"
+_XDG_CACHE = _CACHE_ROOT / "xdg"
+_FONTCONFIG_CACHE = _XDG_CACHE / "fontconfig"
+for path in (_CACHE_ROOT, _MPL_CACHE, _XDG_CACHE, _FONTCONFIG_CACHE):
+    path.mkdir(parents=True, exist_ok=True)
+os.environ.setdefault("MPLCONFIGDIR", str(_MPL_CACHE))
+os.environ.setdefault("XDG_CACHE_HOME", str(_XDG_CACHE))
+
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

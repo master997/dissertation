@@ -1,54 +1,48 @@
-Requires Python 3.11. Verify with:
-  python --version
+SPY Directional Forecasting - 6Z0019 Synoptic Project Creative Piece
 
-This submission is deterministic from the bundled dataset file:
-  data/spy_raw.csv
+Purpose
+- This project is a reproducible research pipeline for leakage-safe SPY next-day direction forecasting.
+- The easiest examiner path is the quick verification run below.
 
-Do NOT re-download data if you are verifying the submitted run.
+Supported Python
+- Python 3.13
+- Verified on Python 3.13.9
 
-Setup:
-  python -m venv .venv
-  source .venv/bin/activate          # Windows: .venv\Scripts\activate
-  pip install -r requirements.txt
-  pip install -e .
+Quick examiner verification path
+1. Open a terminal inside the dissertation-code folder.
+2. Create and activate a virtual environment:
+   python -m venv .venv
+   source .venv/bin/activate
+3. Install examiner dependencies:
+   pip install -e ".[dev]"
+4. Run the tests:
+   pytest tests/
+5. Run the quick pipeline:
+   python -m src.main --quick
 
-Optional (only if you want to re-create the cache file yourself):
-  python scripts/cache_spy.py
+Expected quick-run evidence
+- results/quick/dataset_fingerprint.json
+- results/quick/metrics_aggregate.csv
+- results/quick/significance_tests.csv
+- results/quick/trading_metrics.csv
+- figures/quick/walkforward_schematic.png
+- figures/quick/metrics_table.png
 
-Quick examiner run (target < 5 minutes):
-  pytest tests/
-  python -m src.main --quick
+What the quick run is for
+- It uses the bundled frozen dataset data/spy_raw.csv.
+- It runs a representative subset of folds for examiner verification.
+- It must not overwrite the full submission artifacts in results/, figures/, or models/.
 
-Expected outputs (quick run):
-  results/quick/
-    - dataset_fingerprint.json   (sha256 hash of the CSV used for this run)
-    - predictions.csv
-    - fold_results.csv
-    - metrics.csv
-    - metrics_aggregate.csv
-    - significance_tests.csv
-    - regime_assignments.csv
-    - metrics_by_regime.csv
-    - trading_metrics.csv
-  figures/quick/
-    - walkforward_schematic.png
-    - accuracy_per_fold.png
-    - metrics_table.png
-    - class_distribution.png
-    - confusion_matrices.png
-    - equity_curve.png
-    - equity_curve_cost_sensitivity.png
-    - drawdown_curve.png
-  models/quick/
-    - rf_fold_*.pkl
-    - xgb_fold_*.pkl (only if XGBoost is installed)
+Important notes
+- Normal verification should not need to re-download data.
+- If xgboost is unavailable, the quick path should still complete with baselines and Random Forest.
+- If ffmpeg is unavailable, animation export falls back from MP4 to GIF automatically.
+- Pickled model files in models/ are included for reproducibility only and should not be treated as trusted external inputs.
 
-Full pipeline run (2–4 hours on a typical laptop):
-  python -m src.main
+Main files to read
+- README.md
+- SUBMISSION_CHECKLIST.md
+- SECURITY_AND_EDI.md
 
-Full-run outputs (if you run it yourself) are written to:
-  results/    figures/    models/
-
-XGBoost note:
-  If the `xgboost` Python package cannot be imported, the pipeline will log a warning
-  and proceed without XGBoost. This is expected and still a valid run.
+Submission story
+- The main contribution is methodological rigor and reproducibility, not claiming that complex ML beats a simple long-only baseline.

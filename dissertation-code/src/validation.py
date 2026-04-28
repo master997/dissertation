@@ -17,9 +17,6 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-# Approximate trading days per month for lookahead (embargo stepping uses calendar + explicit test length)
-_TEST_DAYS = 126
-
 
 def walk_forward_splits(df: pd.DataFrame, config: Config) -> list[tuple[np.ndarray, np.ndarray]]:
     """
@@ -27,7 +24,7 @@ def walk_forward_splits(df: pd.DataFrame, config: Config) -> list[tuple[np.ndarr
 
     - Train: `train_years` calendar years immediately preceding test_start (by date).
     - Purge: drop last `purge_days` trading rows from the raw train window.
-    - Test: next `126` trading rows from test_start (≈ 6 months).
+    - Test: next `test_window_days` trading rows from test_start (126 ≈ 6 months).
     - Advance (embargo semantics): calendar time — `test_months` months + `embargo_days` days
       from the *current fold's cursor*, then snap to the first available trading row on/after
       that timestamp.
@@ -47,13 +44,13 @@ def walk_forward_splits(df: pd.DataFrame, config: Config) -> list[tuple[np.ndarr
     folds: list[tuple[np.ndarray, np.ndarray]] = []
 
     while True:
-        # Test window: 126 trading rows starting at first row >= test_start_cursor
+        # Test window: configured trading rows starting at first row >= test_start_cursor.
         test_mask = dates >= test_start_cursor
         if not test_mask.any():
             break
         test_start_pos = int(np.argmax(test_mask))
-        test_end_pos = min(test_start_pos + _TEST_DAYS, n)
-        if test_end_pos - test_start_pos < _TEST_DAYS:
+        test_end_pos = min(test_start_pos + config.test_window_days, n)
+        if test_end_pos - test_start_pos < config.test_window_days:
             break  # not enough rows left for a full test window
 
         test_idx = np.arange(test_start_pos, test_end_pos, dtype=np.int64)

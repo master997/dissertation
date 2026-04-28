@@ -28,6 +28,12 @@ def classify_regimes(
     Label each fold's test window by cumulative log return (bull/bear/sideways)
     and realised volatility tercile (low/mid/high).
     """
+    if config.vol_tercile_method.lower() != "quantile":
+        raise ValueError(
+            "Unsupported vol_tercile_method="
+            f"{config.vol_tercile_method!r}; only 'quantile' is implemented."
+        )
+
     lr = df["log_return"].astype(float)
     rows = []
     for fold_id, (_, test_idx) in enumerate(folds):
@@ -66,13 +72,14 @@ def classify_regimes(
 
     out["vol_regime"] = out["realised_vol"].map(vol_bucket)
 
-    regime_counts = out["return_regime"].value_counts()
+    regime_counts = out["return_regime"].value_counts().reindex(
+        ["bull", "bear", "sideways"], fill_value=0
+    )
     logger.info("Return regime distribution:\n%s", regime_counts)
     if regime_counts.min() < config.min_folds_per_regime:
         logger.warning(
-            "Regime '%s' has only %d folds. Regime analysis with fewer than %d folds per "
-            "regime is not meaningful. Adjust bull_threshold / bear_threshold in "
-            "config.yaml before training.",
+            "Regime '%s' has only %d folds. Treat regime-stratified metrics as descriptive "
+            "when a regime has fewer than %d folds, and report this as a limitation.",
             regime_counts.idxmin(),
             int(regime_counts.min()),
             config.min_folds_per_regime,
