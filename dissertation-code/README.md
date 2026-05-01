@@ -24,6 +24,33 @@ Requires **Python 3.13**. Verified on **Python 3.13.9**.
 
 ---
 
+## Quick path vs full path
+
+There are two run modes. They serve different purposes.
+
+**Quick path** — run this to verify the project works on your machine:
+
+```bash
+python -m src.main --quick
+```
+
+- Runs 3 representative folds (out of 19). Takes ~2 minutes.
+- Generates fresh outputs in `results/quick/` and `figures/quick/`.
+- `results/quick/` and `figures/quick/` are **empty in this ZIP on purpose** — the files are created by your run, proving the pipeline is real and reproducible.
+- This is what the demo video shows.
+
+**Full path** — the original dissertation experiment (already done, outputs included):
+
+```bash
+python -m src.main --require-research-deps
+```
+
+- Runs all 19 folds. Takes several hours.
+- Produced the `results/`, `figures/`, and `models/` contents already in this ZIP.
+- You do not need to run this. The outputs are included so you can inspect the full experimental record.
+
+---
+
 ## What the quick run produces
 
 Running `python -m src.main --quick` generates everything fresh on your machine:

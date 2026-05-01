@@ -56,17 +56,49 @@ figures/quick/walkforward_schematic.png <- diagram of the 19-fold validation sch
 figures/quick/metrics_table.png         <- summary table of results
 
 =======================================================
-FULL SUBMISSION ARTEFACTS
+QUICK PATH vs FULL PATH — WHAT IS THE DIFFERENCE
 =======================================================
 
-The final 19-fold run artefacts are in:
-  results/     <- all CSVs from the full run
-  figures/     <- all PNGs from the full run
-  models/      <- all trained model pickle files
+QUICK PATH (what the demo video shows, what you just ran above)
+---------------------------------------------------------------
+Command:  python -m src.main --quick
+Time:     ~2 minutes
+Folds:    3 representative folds out of 19 (folds 0, 2, 17)
+Output:   results/quick/ and figures/quick/
+Purpose:  Proves the pipeline works end-to-end on your machine.
+          Generates fresh results from scratch so you can verify
+          the code is real and reproducible.
 
-These were generated from the frozen dataset data/spy_raw.csv.
-The quick run above generates a fresh reproducible subset to verify
-the pipeline works end to end on your machine.
+The demo video shows this exact path. The results/quick/ and
+figures/quick/ folders in this ZIP are empty on purpose — they
+get generated fresh when you run the command above.
+
+FULL PATH (what produced the submission artefacts already in this ZIP)
+---------------------------------------------------------------
+Command:  python -m src.main --require-research-deps
+Time:     Several hours
+Folds:    All 19 folds
+Output:   results/, figures/, models/
+Purpose:  The complete dissertation experiment on the frozen dataset.
+          This is what produced the final submission numbers, tables,
+          and figures used in the report and demo slides.
+
+You do NOT need to run the full path. The outputs are already in
+results/, figures/, and models/. They are included so you can
+inspect the full experimental record without waiting hours.
+
+The quick path is the verification path. The full path is the
+record of the original experiment.
+
+=======================================================
+FULL SUBMISSION ARTEFACTS (already in this ZIP)
+=======================================================
+
+  results/     <- all 19-fold CSVs, significance tests, SHAP pickles
+  figures/     <- all 19-fold 300 DPI PNGs
+  models/      <- all 19-fold trained RF and XGBoost pickle files
+
+Generated from the frozen dataset data/spy_raw.csv.
 
 =======================================================
 NOTES
