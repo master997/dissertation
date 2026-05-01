@@ -8,7 +8,7 @@ Use this before creating the Creative Piece ZIP and final Report PDF.
 - [ ] Include the frozen dataset at `data/spy_raw.csv`.
 - [ ] Include the official final submission artefacts from the final full experimental run: `results/`, `figures/`, and `models/`.
 - [ ] Include `results/dataset_fingerprint.json` from the submitted full run. This proves which CSV was used.
-- [ ] Keep `results/quick/`, `figures/quick/`, and `models/quick/` only if you want to provide an examiner-friendly quick reproducibility path.
+- [ ] `results/quick/`, `figures/quick/`, and `models/quick/` are intentionally empty — they are generated fresh when the examiner runs `python -m src.main --quick`.
 - [ ] Name the ZIP using the required MMU pattern: `Lastname_Firstname_UID_CreativePiece.zip`.
 
 ## Before Submission
@@ -21,17 +21,17 @@ Use this before creating the Creative Piece ZIP and final Report PDF.
 From inside the unzipped `dissertation-code` folder:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev]"
-pytest tests/
+pip install -e ".[dev,research]"
+python -m pytest tests/ -q
 python -m src.main --quick
 ```
 
 Notes:
 - [ ] Use Python 3.13 for the examiner run path.
-- [ ] If `xgboost` is missing, the quick path should still complete.
-- [ ] If you want to demonstrate the full research environment, install `.[dev,research]` and run `python -m src.main --require-research-deps`.
+- [ ] Use `python -m pytest`, not bare `pytest`, to avoid PATH issues.
+- [ ] The `results/quick/` and `figures/quick/` folders are empty on purpose — they get generated fresh by the run above.
 
 Expected quick-run evidence:
 

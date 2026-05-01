@@ -1,5 +1,0 @@
-comparison,test,statistic,p_value,p_value_corrected
-majority_vs_rf,paired_t_holm,0.6999999999999995,0.5563930246328657,1.0
-logistic_vs_rf,paired_t_holm,-0.5388159060803244,0.6439655025418443,1.0
-majority_vs_rf,diebold_mariano,-0.4094511591432622,0.6822086023500766,
-logistic_vs_rf,diebold_mariano,3.0016266829258784,0.002685412769459994,

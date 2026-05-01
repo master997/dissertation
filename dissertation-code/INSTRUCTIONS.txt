@@ -1,56 +1,78 @@
-SPY Directional Forecasting - 6Z0019 Synoptic Project Creative Piece
+SPY Directional Forecasting - 6Z0019 Synoptic Project
+Mohammed Master | 22476494
 
-Purpose
-- This project is a reproducible research pipeline for leakage-safe SPY next-day direction forecasting.
-- The easiest examiner path is the quick verification run below.
+=======================================================
+HOW TO RUN THIS PROJECT (read this first)
+=======================================================
 
-Supported Python
-- Python 3.13
-- Verified on Python 3.13.9
+Requires Python 3.13.
 
-Quick examiner verification path
-1. Open a terminal inside the dissertation-code folder.
-2. Create and activate a virtual environment:
-   python -m venv .venv
-   source .venv/bin/activate
-3. Install examiner dependencies:
-   pip install -e ".[dev]"
-4. Run the tests:
-   pytest tests/
-5. Run the quick pipeline:
-   python -m src.main --quick
+Step 1 - open a terminal and go into this folder:
 
-Full dissertation reproduction path
-1. Use the same Python 3.13 environment setup above.
-2. Install research dependencies:
-   pip install -e ".[dev,research]"
-3. Run the strict dissertation path:
-   python -m src.main --require-research-deps
+  cd dissertation-code
 
-Expected quick-run evidence
-- results/quick/dataset_fingerprint.json
-- results/quick/metrics_aggregate.csv
-- results/quick/significance_tests.csv
-- results/quick/trading_metrics.csv
-- figures/quick/walkforward_schematic.png
-- figures/quick/metrics_table.png
+Step 2 - create a virtual environment:
 
-What the quick run is for
-- It uses the bundled frozen dataset data/spy_raw.csv.
-- It runs a representative subset of folds for examiner verification.
-- It must not overwrite the full submission artifacts in results/, figures/, or models/.
+  python3 -m venv .venv
 
-Important notes
-- Normal verification should not need to re-download data.
-- If xgboost is unavailable, the quick path should still complete with baselines and Random Forest.
-- The strict dissertation path uses `--require-research-deps` and fails fast unless both `xgboost` and `shap` are installed.
-- If ffmpeg is unavailable, animation export falls back from MP4 to GIF automatically.
-- Pickled model files in models/ are included for reproducibility only and should not be treated as trusted external inputs.
+Step 3 - activate it:
 
-Main files to read
-- README.md
-- SUBMISSION_CHECKLIST.md
-- SECURITY_AND_EDI.md
+  source .venv/bin/activate
 
-Submission story
-- The main contribution is methodological rigor and reproducibility, not claiming that complex ML beats a simple long-only baseline.
+  Your prompt will now start with (.venv)
+
+Step 4 - install dependencies (takes 2-3 minutes):
+
+  pip install -e ".[dev,research]"
+
+Step 5 - run the tests (should all pass):
+
+  python -m pytest tests/ -q
+
+  Expected output: 16 passed
+
+Step 6 - run the pipeline:
+
+  python -m src.main --quick
+
+  Takes about 2 minutes. No internet needed.
+
+Step 7 - check the outputs were generated:
+
+  ls results/quick/
+  ls figures/quick/
+
+  You should see CSV files in results/quick/ and PNG files in figures/quick/
+
+=======================================================
+WHAT GETS GENERATED
+=======================================================
+
+results/quick/dataset_fingerprint.json  <- SHA-256 hash proving which data was used
+results/quick/metrics_aggregate.csv     <- accuracy, F1, AUC per model
+results/quick/significance_tests.csv   <- paired-t and Diebold-Mariano p-values
+results/quick/trading_metrics.csv      <- Sharpe ratio, drawdown per model
+figures/quick/walkforward_schematic.png <- diagram of the 19-fold validation scheme
+figures/quick/metrics_table.png         <- summary table of results
+
+=======================================================
+FULL SUBMISSION ARTEFACTS
+=======================================================
+
+The final 19-fold run artefacts are in:
+  results/     <- all CSVs from the full run
+  figures/     <- all PNGs from the full run
+  models/      <- all trained model pickle files
+
+These were generated from the frozen dataset data/spy_raw.csv.
+The quick run above generates a fresh reproducible subset to verify
+the pipeline works end to end on your machine.
+
+=======================================================
+NOTES
+=======================================================
+
+- Do not re-download data. Use the bundled data/spy_raw.csv.
+- Use python -m pytest, not just pytest (avoids PATH issues).
+- Pickle files in models/ are for reproducibility only.
+  Do not load them from untrusted sources.
